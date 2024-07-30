@@ -1,0 +1,167 @@
+body {
+    background-color: #141414;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #000;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    color: #e50914;
+}
+
+.navbar-brand:hover {
+    color: #f40612;
+}
+
+.hero-section {
+    background: url('https://source.unsplash.com/random/1600x900') no-repeat center center;
+    background-size: cover;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.hero-heading {
+    font-size: 4rem;
+    margin-bottom: 0;
+}
+
+.hero-subheading {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+.recommendations-section {
+    background-color: #141414;
+    flex: 1;
+    padding: 2rem 0;
+}
+
+.movie-card {
+    background-color: #000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    height: 400px; /* Define a height for all movie cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.movie-card img {
+    width: 100%;
+    height: 300px; /* Set the height for the image */
+    object-fit: cover;
+}
+
+.movie-title {
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 1.1rem;
+    margin: 0; /* Remove margin */
+}
+
+.modal-content {
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    width: 80vw;
+    max-width: 600px;
+    height: auto;
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+}
+
+.modal-header {
+    border-bottom: 1px solid #444;
+}
+
+.modal-footer {
+    border-top: 1px solid #444;
+}
+
+.alert-danger {
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+
+.footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    width: 100%;
+    margin-top: auto;
+}
+
+#sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: left 0.3s ease;
+    z-index: 1000; /* Ensure the sidebar is on top of other content */
+}
+
+#sidebar.sidebar-open {
+    left: 0;
+}
+
+#main-content {
+    transition: margin-left 0.3s ease;
+    flex: 1;
+}
+
+#main-content.main-content-shift {
+    margin-left: 250px;
+}
+
+#genreList ul {
+    padding-left: 0;
+}
+
+#genreList li {
+    list-style: none;
+}
+
+#toggleGenres {
+    display: block;
+    text-align: left;
+}
+
+#openSidebarBtn {
+    margin-bottom: 20px;
+}
+
+
+.form-inline {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.form-inline .form-control {
+    flex: 1;
+}
+
+.form-inline .btn {
+    flex: 0;
+}
