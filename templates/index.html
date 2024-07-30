@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendador de Filmes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="d-flex flex-column">
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div id="sidebar" class="bg-dark text-white p-4 sidebar-closed">
+                <h3 class="text-center">Menu</h3>
+                <button class="btn btn-outline-light w-100 mb-3" id="toggleGenres">Gêneros</button>
+                <div id="genreList" class="d-none">
+                    <!-- Links para filtragem por gênero -->
+                    <ul class="list-group">
+                        <li class="list-group-item bg-dark text-white border-0">
+                            <a href="{% url 'filter_by_genre' 'Ação' %}" class="text-white">Ação</a>
+                        </li>
+                        <li class="list-group-item bg-dark text-white border-0">
+                            <a href="{% url 'filter_by_genre' 'Comédia' %}" class="text-white">Comédia</a>
+                        </li>
+                        <li class="list-group-item bg-dark text-white border-0">
+                            <a href="{% url 'filter_by_genre' 'Drama' %}" class="text-white">Drama</a>
+                        </li>
+                        <li class="list-group-item bg-dark text-white border-0">
+                            <a href="{% url 'filter_by_genre' 'Fantasia' %}" class="text-white">Fantasia</a>
+                        </li>
+                    </ul>
+                </div>
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a href="#" class="text-white mt-3">Sobre</a>
+                </li>
+                <li class="list-group-item bg-dark text-white border-0">
+                    <a href="#" class="text-white mt-2">Contato</a>
+                </li>
+            </div>
+
+            <!-- Main content -->
+            <div id="main-content" class="container-fluid p-4">
+                <button id="openSidebarBtn" class="btn btn-dark">☰</button>
+                <header class="hero-section text-white text-center">
+                    <div class="container d-flex align-items-center flex-column">
+                        <h1 class="hero-heading">Descubra Seu Próximo Filme Favorito</h1>
+                        <p class="hero-subheading">Digite o título de um filme e receba recomendações incríveis!</p>
+                        <form method="POST" class="form-inline w-100 d-flex justify-content-center mt-4">
+                            {% csrf_token %}
+                            <div class="form-group w-75">
+                                <input type="text" class="form-control form-control-lg" id="title" name="title" placeholder="Digite o título do filme..." required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg ml-2">Buscar</button>
+                        </form>
+                    </div>
+                </header>
+
+                <section class="recommendations-section py-5">
+                    <div class="container">
+                        {% if recommendations %}
+                            <h2 class="text-center mb-4">Filmes similares a '{{ title }}':</h2>
+                            <div class="row">
+                                {% for movie in recommendations %}
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card movie-card" data-toggle="modal" data-target="#movieModal{{ movie.movieId }}">
+                                            <div class="movie-title">{{ movie.title }}</div>
+                                            <img src="{{ movie.image_url }}" class="card-img-top" alt="{{ movie.title }}">
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="movieModal{{ movie.movieId }}" tabindex="-1" role="dialog" aria-labelledby="movieModalLabel{{ movie.movieId }}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="movieModalLabel{{ movie.movieId }}">{{ movie.title }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="{{ movie.image_url }}" alt="{{ movie.title }}" class="img-fluid mb-3">
+                                                    <p>{{ movie.overview }}</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% elif error %}
+                            <div class="alert alert-danger mt-5" role="alert">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer class="footer bg-dark text-white text-center py-3">
+            <div class="container">
+                <p>&copy; 2024 Recomendador de Filmes. Todos os direitos reservados.</p>
+                <p><a href="#" class="text-white">Política de Privacidade</a> | <a href="#" class="text-white">Termos de Serviço</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('openSidebarBtn').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            sidebar.classList.toggle('sidebar-open');
+            mainContent.classList.toggle('main-content-shift');
+        });
+
+        document.getElementById('toggleGenres').addEventListener('click', function() {
+            const genreList = document.getElementById('genreList');
+            genreList.classList.toggle('d-none');
+        });
+    </script>
+</body>
+</html>
