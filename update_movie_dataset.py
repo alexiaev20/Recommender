@@ -8,7 +8,7 @@ input_file = os.path.join(BASE_DIR, 'movies.csv')
 output_file = os.path.join(BASE_DIR, 'movies_with_images.csv')
 
 # Chave da API da TMDb
-API_KEY = '188a68c3db35b7d857af1302a800d7a3'
+API_KEY = ''
 API_URL = 'https://api.themoviedb.org/3/movie/'
 
 # Lê o arquivo CSV com os IDs dos filmes
